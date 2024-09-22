@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -16,10 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.jetpackcompose.R
 
 @Composable
 fun GetImageCard(
@@ -74,5 +78,22 @@ fun GetImageCard(
             }
 
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview1() {
+    val painter = painterResource(id = R.drawable.kermit)
+    val description = "Kermit is a great picture"
+    val title = "Kermit is a great picture"
+    Box(modifier = Modifier
+        .fillMaxWidth(0.5f)
+        .padding(16.dp)) {
+        GetImageCard( painter = painter,
+            contentDescription = description,
+            title = title,
+            height = 200, width = 200,
+            cornerRadius = 15)
     }
 }
