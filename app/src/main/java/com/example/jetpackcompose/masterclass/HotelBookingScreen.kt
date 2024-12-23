@@ -1,4 +1,4 @@
-package com.example.jetpackcompose.uiComponent.masterclass
+package com.example.jetpackcompose.masterclass
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -131,7 +131,7 @@ fun HotelBookingScreen(){
                     .padding(16.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
             ) {
-                items(items = offers.entries.toList()){(icons, value)->
+                items(items = offers.entries.toList()){ (icons, value)->
                     Column(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally,
