@@ -61,7 +61,7 @@ fun LazyMindMap(
                @Composable
                override fun Item(index: Int, key: Any) {
                    Text(
-                       text = items[index].title,
+                       text = "ABS",
                        textAlign = TextAlign.Center,
                        overflow = TextOverflow.Ellipsis,
                        maxLines = 2,
@@ -108,9 +108,10 @@ fun LazyMindMap(
                ).first()
                ProcessedMindMapItem(
                    placeable = placeable,
-                   finalXPosition = finalXPosition -placeable.width/2,
-                   finalYPosition = finalYPosition - placeable.height/2
+                   finalXPosition = finalXPosition - placeable.width / 2,
+                   finalYPosition = finalYPosition - placeable.height / 2
                )
+
                } else null
        }
 
