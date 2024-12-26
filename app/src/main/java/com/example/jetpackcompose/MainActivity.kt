@@ -15,6 +15,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.IntOffset
 import com.example.jetpackcompose.masterclass.measurement.LazyMindMap
 import com.example.jetpackcompose.masterclass.measurement.MindMapItem
+import com.example.jetpackcompose.masterclass.measurement.dynamicMindMap.LazyMindMapRoot
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +24,7 @@ class MainActivity : ComponentActivity() {
 //        Log.d("MainActivity","onCreate: ${viewModel.hashCode()}")
         enableEdgeToEdge()
         setContent {
-//                    LazyMindMapRoot(modifier = Modifier)
+                    LazyMindMapRoot(modifier = Modifier)
 
 //            ToDoScreenRoot()
 //            val currentPage = remember {
@@ -53,63 +54,63 @@ class MainActivity : ComponentActivity() {
 //            }
 //
 
-
-        var mindMapItems = remember {
-            listOf(
-                MindMapItem(
-                    title = "HelloWorld 1",
-                    percentageOffset = Offset(
-                        x = 0f,
-                        y = 0f
-                    )
-                ),
-                MindMapItem(
-                    title = "HelloWorld 2",
-                    percentageOffset = Offset(
-                        x = 1f,
-                        y = -0.5f
-                    )
-                ),
-                MindMapItem(
-                    title = "HelloWorld 3",
-                    percentageOffset = Offset(
-                        x = 0.3f,
-                        y = -0.75f
-                    )
-                ),
-                MindMapItem(
-                    title = "HelloWorld 4",
-                    percentageOffset = Offset(
-                        x = .5f,
-                        y = .05f
-                    )
-                ),
-                MindMapItem(
-                    title = "HelloWorld 5",
-                    percentageOffset = Offset(
-                        x = .25f,
-                        y = .25f
-                    )
-                )
-
-
-            )
-        }
-            var mindMapOffSet by remember {
-                mutableStateOf(IntOffset.Zero)
-            }
-            LazyMindMap(
-                items = mindMapItems,
-                mindMapOffSet = mindMapOffSet,
-                onDrag = {delta ->
-                    mindMapOffSet += delta
-                },
-
-                modifier = Modifier
-                    .fillMaxSize()
-                    .safeDrawingPadding()
-            )
 //
+//        var mindMapItems = remember {
+//            listOf(
+//                MindMapItem(
+//                    title = "HelloWorld 1",
+//                    percentageOffset = Offset(
+//                        x = 0f,
+//                        y = 0f
+//                    )
+//                ),
+//                MindMapItem(
+//                    title = "HelloWorld 2",
+//                    percentageOffset = Offset(
+//                        x = 1f,
+//                        y = -0.5f
+//                    )
+//                ),
+//                MindMapItem(
+//                    title = "HelloWorld 3",
+//                    percentageOffset = Offset(
+//                        x = 0.3f,
+//                        y = -0.75f
+//                    )
+//                ),
+//                MindMapItem(
+//                    title = "HelloWorld 4",
+//                    percentageOffset = Offset(
+//                        x = .5f,
+//                        y = .05f
+//                    )
+//                ),
+//                MindMapItem(
+//                    title = "HelloWorld 5",
+//                    percentageOffset = Offset(
+//                        x = .25f,
+//                        y = .25f
+//                    )
+//                )
+//
+//
+//            )
+//        }
+//            var mindMapOffSet by remember {
+//                mutableStateOf(IntOffset.Zero)
+//            }
+//            LazyMindMap(
+//                items = mindMapItems,
+//                mindMapOffSet = mindMapOffSet,
+//                onDrag = {delta ->
+//                    mindMapOffSet += delta
+//                },
+//
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .safeDrawingPadding()
+//            )
+
         }
     }
 }
