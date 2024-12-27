@@ -4,18 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.unit.IntOffset
-import com.example.jetpackcompose.masterclass.measurement.LazyMindMap
-import com.example.jetpackcompose.masterclass.measurement.MindMapItem
-import com.example.jetpackcompose.masterclass.measurement.dynamicMindMap.LazyMindMapRoot
+import com.example.jetpackcompose.effectHandler.withoutEffect.RenderListRoot
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +13,8 @@ class MainActivity : ComponentActivity() {
 //        Log.d("MainActivity","onCreate: ${viewModel.hashCode()}")
         enableEdgeToEdge()
         setContent {
-                    LazyMindMapRoot(modifier = Modifier)
+            RenderListRoot()
+//                    LazyMindMapRoot(modifier = Modifier)
 
 //            ToDoScreenRoot()
 //            val currentPage = remember {
