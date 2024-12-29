@@ -5,6 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.example.jetpackcompose.effectHandler.withoutEffect.RenderListRoot
+import com.example.jetpackcompose.masterclass.measurement.MyScreen
+import com.example.jetpackcompose.masterclass.measurement.SnackbarProvider
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,7 +15,7 @@ class MainActivity : ComponentActivity() {
 //        Log.d("MainActivity","onCreate: ${viewModel.hashCode()}")
         enableEdgeToEdge()
         setContent {
-            RenderListRoot()
+//            RenderListRoot()
 //                    LazyMindMapRoot(modifier = Modifier)
 
 //            ToDoScreenRoot()
