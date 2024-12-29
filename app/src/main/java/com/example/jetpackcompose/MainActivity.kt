@@ -13,7 +13,7 @@ class MainActivity : ComponentActivity() {
 //        Log.d("MainActivity","onCreate: ${viewModel.hashCode()}")
         enableEdgeToEdge()
         setContent {
-//            RenderListRoot()
+            RenderListRoot()
 //                    LazyMindMapRoot(modifier = Modifier)
 
 //            ToDoScreenRoot()
