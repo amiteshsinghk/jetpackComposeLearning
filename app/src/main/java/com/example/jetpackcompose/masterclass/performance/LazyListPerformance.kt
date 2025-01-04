@@ -66,7 +66,7 @@ fun LazyListPerformance(modifier: Modifier = Modifier) {
         ) {
             items(
                 items = myList,
-                key = { it.id }
+                key = { it.id } // pass the key to optimise it
             ) { item ->
                 ListItem(
                     headlineContent = {
