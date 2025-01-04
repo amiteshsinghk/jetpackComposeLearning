@@ -4,16 +4,76 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.remember
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import com.example.jetpackcompose.effectHandler.withoutEffect.RenderListRoot
+import com.example.jetpackcompose.masterclass.performance.DeferredStateReads
+import com.example.jetpackcompose.masterclass.performance.ImageLoading
+import com.example.jetpackcompose.masterclass.performance.KeysCustomLayout
+import com.example.jetpackcompose.masterclass.performance.LazyListPerformance
+import com.example.jetpackcompose.masterclass.performance.MovableContent
+import com.example.jetpackcompose.masterclass.performance.MyScreen
+import com.example.jetpackcompose.masterclass.performance.main_safety.BitmapCompressor
+import com.example.jetpackcompose.masterclass.performance.main_safety.PhotoPickerScreen
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalComposeUiApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        val viewModel =  ToDoViewModel()
 //        Log.d("MainActivity","onCreate: ${viewModel.hashCode()}")
         enableEdgeToEdge()
         setContent {
-            RenderListRoot()
+
+                Scaffold(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .semantics {//baseline
+                            testTagsAsResourceId = true
+                        },
+                ) { innerPadding ->
+                    LazyListPerformance(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding)
+                    )
+                }
+
+
+//            DeferredStateReads(
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .safeDrawingPadding()
+//            )
+
+//            MovableContent(
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .safeDrawingPadding()
+//            )
+
+//            KeysCustomLayout(
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .safeDrawingPadding()
+//            )
+
+//            PhotoPickerScreen(
+//                compressor = remember {
+//                    BitmapCompressor(applicationContext)
+//                },
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .safeDrawingPadding()
+//            )
+//            RenderListRoot()
 //                    LazyMindMapRoot(modifier = Modifier)
 
 //            ToDoScreenRoot()
