@@ -30,7 +30,7 @@ data class Section(
 fun KeysCustomLayout(modifier: Modifier = Modifier) {
     var sections by remember {
         mutableStateOf(
-            (1..3).map {
+            (1..6).map {
                 Section(
                     id = it,
                     header = "Section $it Header",
@@ -45,7 +45,7 @@ fun KeysCustomLayout(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         for (section in sections) {
-            key(section.id) {
+            key(section.id) { // pass the key to optimise it, So that it don't composes again
                 Section(section)
             }
         }
