@@ -43,7 +43,7 @@ fun DeferredStateReads(modifier: Modifier = Modifier) {
         modifier = modifier,
         floatingActionButton = {
             MovingFloatingActionButton(
-                offset = { fabOffset },
+                offset = { fabOffset },// pass the lambda function it  will avoid recomposition
                 onClick = {
                     scope.launch {
                         state.animateScrollToItem(0)
@@ -72,7 +72,7 @@ fun DeferredStateReads(modifier: Modifier = Modifier) {
 
 @Composable
 fun MovingFloatingActionButton(
-    offset: () -> Dp,
+    offset: () -> Dp, // Don't pass the dp value directly pass it in lambda otherwise it will lead to recomposition.
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -80,10 +80,10 @@ fun MovingFloatingActionButton(
     FloatingActionButton(
         onClick = onClick,
         modifier = modifier
-            .offset {
+            .offset { // Don't set the offset value directly 0ffset(y= offset) otherwise it will lead to recomposition.
                 IntOffset(
                     x = 0,
-                    y = with(density) { offset().roundToPx() }
+                    y = with(density) { offset().roundToPx() }// this will call during layout phase so it do't cause recomposition
                 )
             },
     ) {
