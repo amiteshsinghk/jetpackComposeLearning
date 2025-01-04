@@ -17,25 +17,33 @@ class BitmapCompressor(
         contentUri: Uri,
         compressionThreshold: Long
     ): Bitmap? {
-        val inputBytes = context
-            .contentResolver
-            .openInputStream(contentUri)?.use { inputStream ->
-                inputStream.readBytes()
-            } ?: return null
+        /*
+        * Here Input stream and output stream are not suspending function but these are blocking function.
+        * So its should be called in IO thread.
+        * */
+        return withContext(Dispatchers.IO){
+            val inputBytes = context
+                .contentResolver
+                .openInputStream(contentUri)?.use { inputStream ->
+                    inputStream.readBytes()
+                } ?: return@withContext null
 
-        val bitmap = BitmapFactory.decodeByteArray(inputBytes, 0, inputBytes.size)
+            val bitmap = BitmapFactory.decodeByteArray(inputBytes, 0, inputBytes.size)
 
-        var outputBytes: ByteArray
-        var quality = 100
-        do {
-            ByteArrayOutputStream().use { outputStream ->
-                bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream)
-                outputBytes = outputStream.toByteArray()
-                quality -= (quality * 0.1).roundToInt()
+            withContext(Dispatchers.Default){
+                var outputBytes: ByteArray
+                var quality = 100
+                do {
+                    ByteArrayOutputStream().use { outputStream ->
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream)
+                        outputBytes = outputStream.toByteArray()
+                        quality -= (quality * 0.1).roundToInt()
+                    }
+                } while (outputBytes.size > compressionThreshold && quality > 5)
+
+
+                BitmapFactory.decodeByteArray(outputBytes, 0, outputBytes.size)
             }
-        } while (outputBytes.size > compressionThreshold && quality > 5)
-
-
-        return BitmapFactory.decodeByteArray(outputBytes, 0, outputBytes.size)
+        }
     }
 }
