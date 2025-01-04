@@ -62,7 +62,7 @@ fun LazyListPerformance(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .testTag("main_list")
+                .testTag("main_list") // baseline AOT
         ) {
             items(
                 items = myList,
