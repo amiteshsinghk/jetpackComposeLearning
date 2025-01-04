@@ -13,6 +13,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
+
+// Use layout inspector and debugger to check the composable state
 @Composable
 fun MyScreen(modifier: Modifier = Modifier) {
     var counter by remember {
