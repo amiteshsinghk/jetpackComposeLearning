@@ -49,7 +49,8 @@ fun MovableContent(modifier: Modifier = Modifier) {
         )
     }
     val movableProfileImage = remember {
-        movableContentOf {
+        movableContentOf { // It is used to tell the compiler this
+            // composable is used in different layout and used the same without recomposition.
             ProfileImage(profile.pictureResId)
         }
     }
