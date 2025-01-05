@@ -1,9 +1,9 @@
 package com.example.jetpackcompose.masterclass.performance.homework
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.BitmapFactory
 import androidx.compose.animation.core.Animatable
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Box
@@ -27,7 +27,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
@@ -37,21 +36,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil3.compose.AsyncImage
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.math.roundToInt
 
 private const val FILE_NAME = "kermit.jpg"
 
@@ -78,11 +83,21 @@ sealed interface ListAction {
     data class OnCreatePhoto(val id: Int, val photo: ImageBitmap): ListAction
 }
 
-class ListViewModel: ViewModel() {
-
+class ListViewModel(imageReader: ImageReader): ViewModel() {
     private val _items = MutableStateFlow(initialItems)
     val items = _items.asStateFlow()
 
+    init {
+
+        viewModelScope.launch{
+            val bmp = imageReader.getPhoto()
+            _items.update {
+                it.map { item ->
+                    item.copy(photo = bmp)
+                }
+            }
+        }
+    }
     fun onAction(action: ListAction) {
         when(action) {
             is ListAction.OnContextVisibilityChange -> {
@@ -105,11 +120,29 @@ class ListViewModel: ViewModel() {
             }
         }
     }
+
+
+}
+
+class ImageReader(val context: Context){
+    suspend fun getPhoto(fileName: String = "kermit.jpg"): ImageBitmap  {
+         return withContext(Dispatchers.IO){
+            context.assets.open(fileName).use {
+                it.readBytes()
+            }.let {
+                BitmapFactory.decodeByteArray(it, 0, it.size).asImageBitmap()
+            }
+        }
+    }
 }
 
 @Composable
 fun ListItemScreenRoot(modifier: Modifier = Modifier) {
-    val viewModel = viewModel<ListViewModel>()
+    val context = LocalContext.current
+    val imageReader = remember{ ImageReader(context) }
+    val viewModel = viewModel<ListViewModel>{
+        ListViewModel(imageReader)
+    }
     val items by viewModel.items.collectAsStateWithLifecycle()
     Homework1(
         items = items,
@@ -118,26 +151,19 @@ fun ListItemScreenRoot(modifier: Modifier = Modifier) {
     )
 }
 
+
 @Composable
 fun Homework1(
     items: List<ListItem>,
     onAction: (ListAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
     LazyColumn(
         modifier = modifier
             .fillMaxSize(),
     ) {
-        items(items) { item ->
-            LaunchedEffect(item.photo) {
-                context.assets.open(FILE_NAME).use {
-                    it.readBytes()
-                }.also {
-                    val bmp = BitmapFactory.decodeByteArray(it, 0, it.size).asImageBitmap()
-                    onAction(ListAction.OnCreatePhoto(item.id, bmp))
-                }
-            }
+        items(items = items,
+            key = {it.id}) { item ->
             ContextualListItem(
                 item = item,
                 modifier = Modifier
@@ -182,14 +208,6 @@ private fun ContextualListItem(
     }
     val scope = rememberCoroutineScope()
 
-    LaunchedEffect(item.isContextMenuVisible, contextMenuWidth) {
-        if (item.isContextMenuVisible) {
-            offset.animateTo(contextMenuWidth)
-        } else {
-            offset.animateTo(0f)
-        }
-    }
-
     Box(
         modifier = modifier
             .height(IntrinsicSize.Min),
@@ -208,8 +226,8 @@ private fun ContextualListItem(
             supportingContent = { Text(item.description) },
             leadingContent = {
                 item.photo?.let {
-                    Image(
-                        bitmap = item.photo,
+                    AsyncImage(
+                        model = item.photo.asAndroidBitmap(),
                         contentDescription = null,
                         modifier = Modifier
                             .size(100.dp),
@@ -218,9 +236,12 @@ private fun ContextualListItem(
                 }
             },
             modifier = Modifier
-                .offset(x = with(LocalDensity.current) {
-                    offset.value.toDp()
-                })
+                .offset {
+                    IntOffset(
+                        x= offset.value.roundToInt(),
+                        y= 0
+                    )
+                }
                 .background(Color.Green)
                 .pointerInput(true) {
                     detectHorizontalDragGestures(
