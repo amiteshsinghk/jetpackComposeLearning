@@ -20,6 +20,7 @@ import com.example.jetpackcompose.masterclass.performance.KeysCustomLayout
 import com.example.jetpackcompose.masterclass.performance.LazyListPerformance
 import com.example.jetpackcompose.masterclass.performance.MovableContent
 import com.example.jetpackcompose.masterclass.performance.MyScreen
+import com.example.jetpackcompose.masterclass.performance.homework.ListItemScreenRoot
 import com.example.jetpackcompose.masterclass.performance.main_safety.BitmapCompressor
 import com.example.jetpackcompose.masterclass.performance.main_safety.PhotoPickerScreen
 
@@ -29,6 +30,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 //        val viewModel =  ToDoViewModel()
 //        Log.d("MainActivity","onCreate: ${viewModel.hashCode()}")
+
         enableEdgeToEdge()
         setContent {
 
@@ -39,7 +41,7 @@ class MainActivity : ComponentActivity() {
                             testTagsAsResourceId = true
                         },
                 ) { innerPadding ->
-                    LazyListPerformance(
+                    ListItemScreenRoot(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(innerPadding)
