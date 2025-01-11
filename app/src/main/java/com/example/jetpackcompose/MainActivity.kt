@@ -7,12 +7,15 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
+import androidx.compose.ui.text.style.TextAlign
 import com.example.jetpackcompose.effectHandler.withoutEffect.RenderListRoot
 import com.example.jetpackcompose.masterclass.performance.DeferredStateReads
 import com.example.jetpackcompose.masterclass.performance.ImageLoading
@@ -41,11 +44,15 @@ class MainActivity : ComponentActivity() {
                             testTagsAsResourceId = true
                         },
                 ) { innerPadding ->
-                    ListItemScreenRoot(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(innerPadding)
-                    )
+                     Text(
+                         text = "Hello World",
+                         modifier = Modifier
+                             .padding(innerPadding)
+                             .fillMaxSize()
+                             .wrapContentSize(),
+
+
+                     )
                 }
 
 
